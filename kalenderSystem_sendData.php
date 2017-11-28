@@ -1,7 +1,7 @@
 <?PHP
     require_once("kalenderSystem_db.php");
 
-    $db = new DB("localhost", "root", "", "test2");
+    $db = new DB("localhost", "root", "", "kalendersystem");
 
     if(isset($_REQUEST["SQL"]) && isset($_REQUEST["types"]) && isset($_REQUEST["values"])) {
         
@@ -24,24 +24,28 @@
             $values = $temp["0"];
         }
 
-        $matrix = $db->getData($SQL, $types, $values);
-        $matrix = json_encode($matrix, JSON_FORCE_OBJECT);
-        echo($matrix);
+        //echo($SQL);
+        //echo($types);
+        //echo($values);
+        $db->execute($SQL, $types, $values);
+        echo("1");
 
-    } else if (isset($_REQUEST["SQL"]) && isset($_REQUEST["types"])) {
+    } else if (isset($_REQUEST["SQL"]) && isset($_REQUEST["types"]) && !isset($_REQUEST["values"])) {
 
         $types = $_REQUEST["types"];
         $SQL = $_REQUEST["SQL"];
 
         if($types == "¤") {
+            
             //echo($SQL);
             $types = "";
             $values = "";
-            $matrix = $db->getData($SQL, $types, $values);
-            $matrix = json_encode($matrix, JSON_FORCE_OBJECT);
-            echo($matrix);
+            $matrix = $db->execute($SQL, $types, $values);
+            
         } else {
+         
             echo("FEL");
+
         }
 
     } else {
