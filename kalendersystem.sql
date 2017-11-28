@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Värd: 127.0.0.1
--- Tid vid skapande: 28 nov 2017 kl 10:40
+-- Tid vid skapande: 28 nov 2017 kl 13:45
 -- Serverversion: 10.1.19-MariaDB
 -- PHP-version: 7.0.13
 
@@ -100,6 +100,18 @@ CREATE TABLE `events` (
 -- --------------------------------------------------------
 
 --
+-- Tabellstruktur `hash`
+--
+
+CREATE TABLE `hash` (
+  `hashID` int(11) NOT NULL,
+  `userID` int(11) NOT NULL,
+  `hash` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Tabellstruktur `users`
 --
 
@@ -165,6 +177,13 @@ ALTER TABLE `events`
   ADD KEY `events_ibfk_2` (`calendarID`);
 
 --
+-- Index för tabell `hash`
+--
+ALTER TABLE `hash`
+  ADD PRIMARY KEY (`hashID`),
+  ADD KEY `userID` (`userID`);
+
+--
 -- Index för tabell `users`
 --
 ALTER TABLE `users`
@@ -205,6 +224,11 @@ ALTER TABLE `eventinvites`
 --
 ALTER TABLE `events`
   MODIFY `eventID` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT för tabell `hash`
+--
+ALTER TABLE `hash`
+  MODIFY `hashID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT för tabell `users`
 --
@@ -254,6 +278,12 @@ ALTER TABLE `eventinvites`
 ALTER TABLE `events`
   ADD CONSTRAINT `events_ibfk_1` FOREIGN KEY (`creatorID`) REFERENCES `users` (`userID`),
   ADD CONSTRAINT `events_ibfk_2` FOREIGN KEY (`calendarID`) REFERENCES `calendars` (`calendarID`);
+
+--
+-- Restriktioner för tabell `hash`
+--
+ALTER TABLE `hash`
+  ADD CONSTRAINT `hash_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
