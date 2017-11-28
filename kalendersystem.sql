@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Värd: 127.0.0.1
--- Tid vid skapande: 28 nov 2017 kl 10:13
+-- Tid vid skapande: 28 nov 2017 kl 10:40
 -- Serverversion: 10.1.19-MariaDB
 -- PHP-version: 7.0.13
 
@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `acceptedcalendars` (
   `acceptedCalendarsID` int(11) NOT NULL,
-  `calendarInviteID` int(11) NOT NULL,
+  `calendarID` int(11) NOT NULL,
   `userID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -40,7 +40,7 @@ CREATE TABLE `acceptedcalendars` (
 
 CREATE TABLE `acceptedevents` (
   `acceptedEventsID` int(11) NOT NULL,
-  `eventInviteID` int(11) NOT NULL,
+  `eventID` int(11) NOT NULL,
   `userID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -65,8 +65,8 @@ CREATE TABLE `calendarinvites` (
 
 CREATE TABLE `calendars` (
   `calendarID` int(11) NOT NULL,
-  `creatorID` int(11) NOT NULL,
-  `name` varchar(52) NOT NULL
+  `name` varchar(52) NOT NULL,
+  `creatorID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -120,37 +120,49 @@ CREATE TABLE `users` (
 -- Index för tabell `acceptedcalendars`
 --
 ALTER TABLE `acceptedcalendars`
-  ADD PRIMARY KEY (`acceptedCalendarsID`);
+  ADD PRIMARY KEY (`acceptedCalendarsID`),
+  ADD KEY `calendarID` (`calendarID`),
+  ADD KEY `userID` (`userID`);
 
 --
 -- Index för tabell `acceptedevents`
 --
 ALTER TABLE `acceptedevents`
-  ADD PRIMARY KEY (`acceptedEventsID`);
+  ADD PRIMARY KEY (`acceptedEventsID`),
+  ADD KEY `eventID` (`eventID`),
+  ADD KEY `userID` (`userID`);
 
 --
 -- Index för tabell `calendarinvites`
 --
 ALTER TABLE `calendarinvites`
-  ADD PRIMARY KEY (`calendarInviteID`);
+  ADD PRIMARY KEY (`calendarInviteID`),
+  ADD KEY `calendarID` (`calendarID`),
+  ADD KEY `userID` (`userID`);
 
 --
 -- Index för tabell `calendars`
 --
 ALTER TABLE `calendars`
-  ADD PRIMARY KEY (`calendarID`);
+  ADD PRIMARY KEY (`calendarID`),
+  ADD UNIQUE KEY `name` (`name`),
+  ADD KEY `creatorID` (`creatorID`);
 
 --
 -- Index för tabell `eventinvites`
 --
 ALTER TABLE `eventinvites`
-  ADD PRIMARY KEY (`eventInviteID`);
+  ADD PRIMARY KEY (`eventInviteID`),
+  ADD KEY `eventID` (`eventID`,`userID`),
+  ADD KEY `eventinvites_ibfk_2` (`userID`);
 
 --
 -- Index för tabell `events`
 --
 ALTER TABLE `events`
-  ADD PRIMARY KEY (`eventID`);
+  ADD PRIMARY KEY (`eventID`),
+  ADD KEY `creatorID` (`creatorID`,`calendarID`),
+  ADD KEY `events_ibfk_2` (`calendarID`);
 
 --
 -- Index för tabell `users`
@@ -198,6 +210,51 @@ ALTER TABLE `events`
 --
 ALTER TABLE `users`
   MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- Restriktioner för dumpade tabeller
+--
+
+--
+-- Restriktioner för tabell `acceptedcalendars`
+--
+ALTER TABLE `acceptedcalendars`
+  ADD CONSTRAINT `acceptedcalendars_ibfk_1` FOREIGN KEY (`calendarID`) REFERENCES `calendars` (`calendarID`),
+  ADD CONSTRAINT `acceptedcalendars_ibfk_2` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`);
+
+--
+-- Restriktioner för tabell `acceptedevents`
+--
+ALTER TABLE `acceptedevents`
+  ADD CONSTRAINT `acceptedevets_ibfk_1` FOREIGN KEY (`eventID`) REFERENCES `events` (`eventID`),
+  ADD CONSTRAINT `acceptedevets_ibfk_2` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`);
+
+--
+-- Restriktioner för tabell `calendarinvites`
+--
+ALTER TABLE `calendarinvites`
+  ADD CONSTRAINT `calendarinvites_ibfk_1` FOREIGN KEY (`calendarInviteID`) REFERENCES `calendars` (`calendarID`),
+  ADD CONSTRAINT `calendarinvites_ibfk_2` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`);
+
+--
+-- Restriktioner för tabell `calendars`
+--
+ALTER TABLE `calendars`
+  ADD CONSTRAINT `calendars_ibfk_1` FOREIGN KEY (`creatorID`) REFERENCES `users` (`userID`);
+
+--
+-- Restriktioner för tabell `eventinvites`
+--
+ALTER TABLE `eventinvites`
+  ADD CONSTRAINT `eventinvites_ibfk_1` FOREIGN KEY (`eventID`) REFERENCES `events` (`eventID`),
+  ADD CONSTRAINT `eventinvites_ibfk_2` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`);
+
+--
+-- Restriktioner för tabell `events`
+--
+ALTER TABLE `events`
+  ADD CONSTRAINT `events_ibfk_1` FOREIGN KEY (`creatorID`) REFERENCES `users` (`userID`),
+  ADD CONSTRAINT `events_ibfk_2` FOREIGN KEY (`calendarID`) REFERENCES `calendars` (`calendarID`);
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
