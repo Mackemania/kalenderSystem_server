@@ -46,7 +46,7 @@
                 $matrix = json_encode($matrix, JSON_FORCE_OBJECT);
                 echo($matrix);
 
-            } else if (isset($_REQUEST["SQL"]) && isset($_REQUEST["types"]) && ) {
+            } else if (isset($_REQUEST["SQL"]) && isset($_REQUEST["types"])) {
 
                 $types = $_REQUEST["types"];
                 $SQL = $_REQUEST["SQL"];
@@ -61,7 +61,7 @@
                 } else {
                     echo("0");
                 }
-                
+
             } else {
 
                 echo("0");
