@@ -44,12 +44,12 @@
             
         } else {
          
-            echo("FEL");
+            echo("No types");
 
         }
 
     } else {
 
-        echo("FEL");
+        echo("Missing arguments");
     }
 ?>
