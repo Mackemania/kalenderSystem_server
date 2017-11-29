@@ -43,6 +43,9 @@
 
                 //echo($values);
                 $matrix = $db->getData($SQL, $types, $values);
+                if(!isset($matrix[0][0])) {
+                    $matrix[0][0] = "null";
+                }
                 $matrix = json_encode($matrix, JSON_FORCE_OBJECT);
                 echo($matrix);
 
@@ -59,21 +62,23 @@
                     $matrix = json_encode($matrix, JSON_FORCE_OBJECT);
                     echo($matrix);
                 } else {
-                    echo("0");
+                    
+                    echo("Type error");
+                
                 }
 
             } else {
 
-                echo("0");
+                echo("Missing arguments");
             }
 
         } else {
 
-            echo("0");
+            echo("Wrong data");
         }
 
     } else {
 
-        echo("0");
+        echo("Missing arguments");
     }
 ?>
