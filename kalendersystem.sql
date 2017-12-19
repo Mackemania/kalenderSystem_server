@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Värd: 127.0.0.1
--- Tid vid skapande: 06 dec 2017 kl 13:56
+-- Tid vid skapande: 18 dec 2017 kl 10:27
 -- Serverversion: 10.1.19-MariaDB
 -- PHP-version: 7.0.13
 
@@ -73,7 +73,6 @@ CREATE TABLE `calendars` (
 -- Dumpning av Data i tabell `calendars`
 --
 
-
 -- --------------------------------------------------------
 
 --
@@ -102,6 +101,10 @@ CREATE TABLE `events` (
   `endTime` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumpning av Data i tabell `events`
+--
+
 -- --------------------------------------------------------
 
 --
@@ -117,7 +120,6 @@ CREATE TABLE `hash` (
 --
 -- Dumpning av Data i tabell `hash`
 --
-
 
 -- --------------------------------------------------------
 
@@ -137,7 +139,6 @@ CREATE TABLE `users` (
 --
 -- Dumpning av Data i tabell `users`
 --
-
 
 --
 -- Index för dumpade tabeller
@@ -172,7 +173,6 @@ ALTER TABLE `calendarinvites`
 --
 ALTER TABLE `calendars`
   ADD PRIMARY KEY (`calendarID`),
-  ADD UNIQUE KEY `name` (`name`),
   ADD KEY `creatorID` (`creatorID`);
 
 --
@@ -224,11 +224,6 @@ ALTER TABLE `acceptedevents`
 --
 ALTER TABLE `calendarinvites`
   MODIFY `calendarInviteID` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT för tabell `calendars`
---
-ALTER TABLE `calendars`
-  MODIFY `calendarID` int(11) NOT NULL;
 --
 -- AUTO_INCREMENT för tabell `eventinvites`
 --
