@@ -27,12 +27,12 @@
 
         } else {
 
-            echo("0");
+            echo("Username or E-mail already in use");
         }
 
     } else {
 
-        echo("0");
+        echo("Missing arguments");
     
     }
 
